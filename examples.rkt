@@ -51,4 +51,4 @@ We can represent this as (in1p -> biscuit -> STOP | in2p -> choc -> STOP) |#
 #| We can also recursively define a vending machine that acts as (μX . coin -> choc -> X)
 i.e. it takes a coin and dispenses a chocolate, in a loop, forever. |#
 (define infinite-vending-machine
-  (prefix 'coin (prefix 'choc infinite-vending-machine)))
+  (prefix 'coin (prefix 'choc (lambda (event) (infinite-vending-machine event)))))
