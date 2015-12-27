@@ -52,3 +52,16 @@ We can represent this as (in1p -> biscuit -> STOP | in2p -> choc -> STOP) |#
 i.e. it takes a coin and dispenses a chocolate, in a loop, forever. |#
 (define infinite-vending-machine
   (prefix 'coin (prefix 'choc (lambda (event) (infinite-vending-machine event)))))
+
+#| We can also define a helicopter pilot who can always travel up and who can travel down
+except when on the ground. Their height ranges over the natural numbers {0,1,2..}. When on
+the ground, the pilot can move around horizontally.
+In CSP, we can define this as a mutually recursive set of equations:
+HP_0 = (up -> HP_1 | around -> HP_0)
+HP_{n+1} = (up -> HP_{n+1} | down -> HP_n) where n ∈ {0,1,2...} |#
+(define (helicopter-pilot height)
+  (cond
+    [(eq? height 0) (choice2 'around (helicopter-pilot 0) 'up (helicopter-pilot 1))]
+    [(positive? height) (choice2 'up (helicopter-pilot (+ 1 height)) 'down (helicopter-pilot (+1 height)))]
+    [else (error "Pilot cannot be below ground")]))
+  
